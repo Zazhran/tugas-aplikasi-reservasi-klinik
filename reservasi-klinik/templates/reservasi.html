@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Reservasi{% endblock %}
+{% block content %}
+<h1>Buat Reservasi</h1>
+<p><b>{{ pesan }}</b></p><form method="post">No. RM <input name="no_rm"> Dokter <select name="dokter">{% for item in dokter %}<option value="{{ item.id }}">{{ item.nama }} ({{ item.poli }})</option>{% endfor %}</select> Tanggal <input type="date" name="tanggal"> Jam <input name="jam" placeholder="08:20"> <button>Pesan</button></form>
+{% endblock %}
+

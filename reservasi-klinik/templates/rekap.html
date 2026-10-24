@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Rekap{% endblock %}
+{% block content %}
+<h1>Rekap {{ tanggal }}</h1>
+<form><input type="date" name="tanggal" value="{{ tanggal }}"><button>Lihat</button></form>
+{% for poli, nilai in per_poli.items() %}<div class="kartu">Poli {{ poli }}: {{ nilai.pasien }} pasien ﾂｷ Rp {{ nilai.pendapatan|rupiah }}</div>{% else %}<p>Belum ada reservasi.</p>{% endfor %}
+{% endblock %}
+

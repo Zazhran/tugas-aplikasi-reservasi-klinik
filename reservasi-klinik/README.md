@@ -65,7 +65,47 @@ Semua aturan ini saat ini tertulis **langsung di dalam fungsi route** (sebagian 
 
 | File | Isi |
 |------|-----|
-| `app.py` | Seluruh aplikasi (monolitik) |
+| `app.py` | Factory Flask dan registrasi blueprint |
 | `data.json` | Data contoh (berubah setiap ada transaksi) |
 | `Dockerfile`, `requirements.txt` | Image Python 3.12 + Flask |
 | `docker-compose.yml` | Menjalankan aplikasi ini di port 5003; folder di-mount ke container sehingga perubahan kode langsung terbaca |
+
+## Hasil Modularisasi
+
+Struktur aplikasi setelah pemecahan:
+
+```text
+app.py
+config.py
+repositori/json_repo.py
+layanan/jadwal.py
+layanan/reservasi.py
+rute/web.py
+rute/api.py
+templates/
+utils/format.py
+```
+
+Arah ketergantungan dibuat satu arah: `rute -> layanan -> repositori`, sedangkan
+template dipakai oleh route web dan konstanta aturan bisnis disimpan di `config.py`.
+Dengan begitu, route hanya menangani HTTP, layanan tidak bergantung pada Flask,
+dan detail penyimpanan JSON tersembunyi di `JsonRepository`.
+
+Peta pemecahan aturan bisnis:
+
+| Blok monolitik | Fungsi baru | Modul |
+|---|---|---|
+| Menentukan nama hari dari tanggal | `hari_dari_tanggal` | `layanan/jadwal.py` |
+| Membuat slot 20 menit | `buat_slot` | `layanan/jadwal.py` |
+| Mengambil slot yang belum terisi | `slot_kosong` | `layanan/jadwal.py` |
+| Mencari pasien dan dokter | `cari_pasien`, `cari_dokter` | `layanan/reservasi.py` |
+| Menghitung umur kunjungan | `hitung_umur` | `layanan/reservasi.py` |
+| Menghitung biaya pasien | `hitung_biaya` | `layanan/reservasi.py` |
+| Menentukan nomor antrean dan kode | `hitung_antrian`, `buat_kode` | `layanan/reservasi.py` |
+| Membuat reservasi | `buat_reservasi` | `layanan/reservasi.py` |
+| Membatalkan reservasi | `batalkan_reservasi` | `layanan/reservasi.py` |
+| Membuat rekap per poli | `rekap_harian` | `layanan/reservasi.py` |
+
+Web dan API memakai layanan yang sama. Perbedaan lama tetap dipertahankan:
+API menolak reservasi ganda pasien pada dokter dan tanggal yang sama, sedangkan
+route web lama tidak melakukan pemeriksaan tersebut.
