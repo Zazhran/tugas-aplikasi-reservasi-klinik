@@ -2,9 +2,9 @@
 # Tugas mahasiswa: pecah menjadi modul tanpa mengubah perilakunya (lihat README.md).
 from flask import Flask, request, jsonify, render_template_string
 import json, os, datetime
+from repositori.json_repo import baca_data, simpan_data
 
 app = Flask(__name__)
-DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data.json")
 DATA = {}
 
 STYLE = "<style>body{font-family:Verdana,sans-serif;margin:30px;background:#f4fbfb} .kartu{background:white;border-left:5px solid #1a8f8f;padding:10px 16px;margin:10px 0} a{margin-right:12px}</style>"
@@ -13,15 +13,11 @@ MENU = "<p><a href='/'>Dokter</a><a href='/reservasi'>Buat Reservasi</a><a href=
 
 def baca():
     global DATA
-    f = open(DATA_FILE, encoding="utf-8")
-    DATA = json.load(f)
-    f.close()
+    DATA = baca_data()
 
 
 def tulis():
-    f = open(DATA_FILE, "w", encoding="utf-8")
-    json.dump(DATA, f, indent=2, ensure_ascii=False)
-    f.close()
+    simpan_data(DATA)
 
 
 @app.route("/")
