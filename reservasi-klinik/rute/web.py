@@ -52,7 +52,7 @@ def reservasi():
                 tolak_pasien_ganda=False,
             )
             pesan = (
-                f"Reservasi berhasil: {baru['kode']} ﾂｷ antrian {baru['antrian']} ﾂｷ "
+                f"Reservasi berhasil: {baru['kode']} - antrian {baru['antrian']} - "
                 f"biaya Rp {format_rupiah(baru['biaya'])}"
             )
         except ReservasiError as error:

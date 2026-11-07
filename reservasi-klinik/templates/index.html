@@ -4,7 +4,7 @@
 <h1>Dokter Kami</h1>
 <form>Poli: <select name="poli"><option value="">semua</option>{% for item in semua_poli %}<option{% if item == poli %} selected{% endif %}>{{ item }}</option>{% endfor %}</select><button>Filter</button></form>
 {% for item in dokter %}
-<div class="kartu"><b>{{ item.nama }}</b> ({{ item.id }})<br>Poli {{ item.poli }} ﾂｷ Tarif Rp {{ item.tarif|rupiah }}<br><small>{% for hari, jam in item.jadwal.items() %}{{ hari|capitalize }} {{ jam[0] }}窶・{{ jam[1] }}{% if not loop.last %}, {% endif %}{% endfor %}</small></div>
+<div class="kartu"><b>{{ item.nama }}</b> ({{ item.id }})<br>Poli {{ item.poli }} - Tarif Rp {{ item.tarif|rupiah }}<br><small>{% for hari, jam in item.jadwal.items() %}{{ hari|capitalize }} {{ jam[0] }}-{{ jam[1] }}{% if not loop.last %}, {% endif %}{% endfor %}</small></div>
 {% endfor %}
 {% endblock %}
 
